@@ -40,7 +40,7 @@ public class CodecServerHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, Object request) {
+    public void channelRead0(ChannelHandlerContext ctx, Object request) {
         // Generate and write a response.
         String response;
         boolean close = false;

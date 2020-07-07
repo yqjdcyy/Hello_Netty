@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HeartbeatServer {
-    public static Map<String, Boolean> map= new HashMap<String, Boolean>();
+    public static Map<String, Boolean> map = new HashMap<String, Boolean>();
 
     public static void main(String[] args) {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -50,8 +50,8 @@ public class HeartbeatServer {
     }
 }
 
-class HeartbeatHandler extends ChannelHandlerAdapter {
-    public static final String HEARTBEAT_REQUEST= "HEARTBEAT_REQUEST";
+class HeartbeatHandler extends ChannelInboundHandlerAdapter {
+    public static final String HEARTBEAT_REQUEST = "HEARTBEAT_REQUEST";
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
@@ -73,16 +73,16 @@ class HeartbeatHandler extends ChannelHandlerAdapter {
             ctx.writeAndFlush(HEARTBEAT_REQUEST).addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    if(!future.isSuccess()) {
+                    if (!future.isSuccess()) {
                         HeartbeatServer.map.put(future.channel().id().asShortText(), false);
                         System.out.println(future.channel().id().asShortText() + "\tHeartbeatHandler.userEventTriggered.writeAndFlush.operationComplete.FAIL!");
                         future.channel().close();
-                    }else{
+                    } else {
                         HeartbeatServer.map.put(future.channel().id().asShortText(), true);
                     }
                 }
             });
-        }else {
+        } else {
             super.userEventTriggered(ctx, evt);
         }
         System.out.println(HeartbeatServer.map.toString());

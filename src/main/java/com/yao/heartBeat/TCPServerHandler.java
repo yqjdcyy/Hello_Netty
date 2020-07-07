@@ -1,22 +1,25 @@
 package com.yao.heartBeat;
 
-import org.jboss.netty.channel.ChannelHandler;
-import org.jboss.netty.channel.ChannelPipeline;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.Channels;
-import org.jboss.netty.handler.timeout.ReadTimeoutHandler;
-import org.jboss.netty.util.HashedWheelTimer;
+
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Administrator on 2015/1/19.
  */
-public class TCPServerHandler implements ChannelPipelineFactory {
+public class TCPServerHandler extends ChannelInitializer {
+
     @Override
-    public ChannelPipeline getPipeline() throws Exception {
-        ChannelPipeline pipeline = Channels.pipeline();
+    protected void initChannel(Channel channel) throws Exception {
+
+        ChannelPipeline pipeline = channel.pipeline();
         //设置读取数据超时处理
-        pipeline.addLast("readTimeOut",new ReadTimeoutHandler(new HashedWheelTimer(),10));
+        pipeline.addLast("readTimeOut", new ReadTimeoutHandler(10, TimeUnit.SECONDS));
         pipeline.addLast("handler", (ChannelHandler) new TCPServerHandler());
-        return pipeline;
     }
 }

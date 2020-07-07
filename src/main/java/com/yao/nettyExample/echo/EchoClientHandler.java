@@ -17,15 +17,15 @@ package com.yao.nettyExample.echo;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
  * Handler implementation for the echo client.  It initiates the ping-pong
  * traffic between the echo client and server by sending the first message to
  * the server.
  */
-public class EchoClientHandler extends ChannelHandlerAdapter {
+public class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
     private final ByteBuf firstMessage;
 
@@ -34,7 +34,7 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
      */
     public EchoClientHandler() {
         firstMessage = Unpooled.buffer(EchoClient.SIZE);
-        for (int i = 0; i < firstMessage.capacity(); i ++) {
+        for (int i = 0; i < firstMessage.capacity(); i++) {
             firstMessage.writeByte((byte) i);
         }
     }
@@ -51,7 +51,7 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-       ctx.flush();
+        ctx.flush();
     }
 
     @Override

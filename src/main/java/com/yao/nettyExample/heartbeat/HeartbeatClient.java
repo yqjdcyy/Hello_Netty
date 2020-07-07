@@ -1,7 +1,10 @@
 package com.yao.nettyExample.heartbeat;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -40,14 +43,12 @@ public class HeartbeatClient {
     }
 }
 
-class ClientHeartbeatHandler extends ChannelHandlerAdapter {
-    private static int TIMER= 0;
+class ClientHeartbeatHandler extends ChannelInboundHandlerAdapter {
+    private static int TIMER = 0;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-//        System.out.println("ClientHeartbeatHandler.start");
         String retMsg = (String) msg;
-//        System.out.println("ClientHeartbeatHandler.MSG= " + retMsg);
         if (HeartbeatHandler.HEARTBEAT_REQUEST.equals(retMsg)) {
             if (++TIMER < 2) {
                 System.out.println("ClientHeartbeatHandler.channelRead.TIMER= " + TIMER);

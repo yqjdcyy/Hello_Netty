@@ -1,0 +1,19 @@
+// 默认版本为 proto2
+syntax = "proto3";
+// 包定义，避免同名冲突
+package com.yao.serialize;
+
+// 生成时对应的 Java 类的目录、名称
+option java_package = "com.yao.serialize";
+option java_outer_classname = "UserProto";
+
+// 结构体定义
+message User {
+  // 数据类型 别名 = 生成序列
+  uint32 id = 1;
+  string name = 2;
+  // 预留标识号和字段名
+  reserved 3 to 9;
+  reserved "id_card";
+}
+

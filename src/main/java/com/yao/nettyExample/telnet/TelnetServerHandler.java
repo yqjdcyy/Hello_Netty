@@ -39,7 +39,19 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, String request) {
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        ctx.flush();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, String request) throws Exception {
+
         // Generate and write a response.
         String response;
         boolean close = false;
@@ -61,16 +73,5 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
         if (close) {
             future.addListener(ChannelFutureListener.CLOSE);
         }
-    }
-
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.flush();
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
     }
 }

@@ -33,7 +33,7 @@ public class FactorialServerHandler extends SimpleChannelInboundHandler<BigInteg
     private BigInteger factorial = new BigInteger("1");
 
     @Override
-    public void messageReceived(ChannelHandlerContext ctx, BigInteger msg) {
+    public void channelRead0(ChannelHandlerContext ctx, BigInteger msg) {
         // Calculate the cumulative factorial and send it to the client.
         lastMultiplier = msg;
         factorial = factorial.multiply(msg);

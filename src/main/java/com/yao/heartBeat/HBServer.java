@@ -47,7 +47,7 @@ public class HBServer {
                             ch.pipeline()
                                     .addLast(new HBServerHandler())
                                     .addLast("timeout", new IdleStateHandler(10, 5, 0, TimeUnit.SECONDS))
-                                    .addLast("heartbeat", (ChannelHandler) new Heartbeat());
+                                    .addLast("heartbeat", (ChannelHandler) new IdleStateHandler(30, 0, 0));
                         }
                     });
 

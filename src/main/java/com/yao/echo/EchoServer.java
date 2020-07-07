@@ -18,7 +18,7 @@ public class EchoServer {
 
     private final int port;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
             new EchoServer(9999).run();
         } catch (Exception e) {
@@ -37,14 +37,16 @@ public class EchoServer {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 100)
-                    .handler(new LoggingHandler(LogLevel.INFO)).childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(
-                            new EchoServerHandler());
-                }
-            });
+            b.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 100)
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new EchoServerHandler());
+                        }
+                    });
 
             // Start the server.
             ChannelFuture f = b.bind(port).sync();
