@@ -1,7 +1,6 @@
 package com.yao.serialize;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +47,7 @@ public class UserProtoTest {
     @Test
     public void decodeByDelimited() throws IOException {
 
-        ByteOutputStream outputStream = new ByteOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         user.writeDelimitedTo(outputStream);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
         UserProto.User user = UserProto.User.parseDelimitedFrom(inputStream);

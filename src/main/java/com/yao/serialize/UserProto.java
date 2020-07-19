@@ -695,8 +695,9 @@ public final class UserProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\023protocol/user.proto\022\021com.yao.serialize" +
-      "\" \n\004User\022\n\n\002id\030\001 \001(\r\022\014\n\004name\030\002 \001(\tB\036\n\021co" +
-      "m.yao.serializeB\tUserProtob\006proto3"
+      "\"/\n\004User\022\n\n\002id\030\001 \001(\r\022\014\n\004name\030\002 \001(\tJ\004\010\003\020\n" +
+      "R\007id_cardB\036\n\021com.yao.serializeB\tUserProt" +
+      "ob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
