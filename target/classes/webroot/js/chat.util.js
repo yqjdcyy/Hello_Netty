@@ -190,7 +190,7 @@ $(document).ready(function () {
                     //鲜花特效
                     $(document).snowfall('clear');
                     $(document).snowfall({
-                        image: "/images/face/50.gif",
+                        image: "/images/face/40.gif",
                         flakeCount: 60,
                         minSize: 20,
                         maxSize: 40
