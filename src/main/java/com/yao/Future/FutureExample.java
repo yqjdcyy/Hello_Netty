@@ -1,9 +1,6 @@
 package com.yao.Future;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 /**
  * Created by Yao on 2015/1/4.
@@ -11,7 +8,11 @@ import java.util.concurrent.Future;
 public class FutureExample {
 
     public static void main(String[] args) throws Exception {
-        ExecutorService executor = Executors.newCachedThreadPool();
+
+        ExecutorService executor =
+                new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                        60L, TimeUnit.SECONDS,
+                        new SynchronousQueue<Runnable>());
         Runnable task1 = new Runnable() {
             @Override
             public void run() {

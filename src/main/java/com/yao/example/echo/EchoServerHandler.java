@@ -27,6 +27,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        System.out.println("Server.Reiceve:\t" + msg);
         ctx.write(msg);
     }
 

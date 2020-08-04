@@ -16,11 +16,7 @@
 package com.yao.example.redis;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -45,18 +41,18 @@ public class RedisClient {
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
-             .channel(NioSocketChannel.class)
-             .handler(new ChannelInitializer<SocketChannel>() {
-                 @Override
-                 protected void initChannel(SocketChannel ch) throws Exception {
-                     ChannelPipeline p = ch.pipeline();
-                     p.addLast(new RedisDecoder());
-                     p.addLast(new RedisBulkStringAggregator());
-                     p.addLast(new RedisArrayAggregator());
-                     p.addLast(new RedisEncoder());
-                     p.addLast(new RedisClientHandler());
-                 }
-             });
+                    .channel(NioSocketChannel.class)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline p = ch.pipeline();
+                            p.addLast(new RedisDecoder());
+                            p.addLast(new RedisBulkStringAggregator());
+                            p.addLast(new RedisArrayAggregator());
+                            p.addLast(new RedisEncoder());
+                            p.addLast(new RedisClientHandler());
+                        }
+                    });
 
             // Start the connection attempt.
             Channel ch = b.connect(HOST, PORT).sync().channel();
@@ -65,13 +61,15 @@ public class RedisClient {
             System.out.println("Enter Redis commands (quit to end)");
             ChannelFuture lastWriteFuture = null;
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            for (;;) {
+            for (; ; ) {
                 final String input = in.readLine();
                 final String line = input != null ? input.trim() : null;
-                if (line == null || "quit".equalsIgnoreCase(line)) { // EOF or "quit"
+                // EOF or "quit"
+                if (line == null || "quit".equalsIgnoreCase(line)) {
                     ch.close().sync();
                     break;
-                } else if (line.isEmpty()) { // skip `enter` or `enter` with spaces.
+                    // skip `enter` or `enter` with spaces.
+                } else if (line.isEmpty()) {
                     continue;
                 }
                 // Sends the received line to the server.

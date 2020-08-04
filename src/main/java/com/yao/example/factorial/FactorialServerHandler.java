@@ -37,6 +37,7 @@ public class FactorialServerHandler extends SimpleChannelInboundHandler<BigInteg
         // Calculate the cumulative factorial and send it to the client.
         lastMultiplier = msg;
         factorial = factorial.multiply(msg);
+        System.out.printf("Server.Read(%d)=\t%d\n", msg, factorial);
         ctx.writeAndFlush(factorial);
     }
 

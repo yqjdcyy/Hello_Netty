@@ -41,7 +41,7 @@ public class FactorialClientHandler extends SimpleChannelInboundHandler<BigInteg
     public BigInteger getFactorial() {
         boolean interrupted = false;
         try {
-            for (;;) {
+            for (; ; ) {
                 try {
                     return answer.take();
                 } catch (InterruptedException ignore) {
@@ -63,7 +63,7 @@ public class FactorialClientHandler extends SimpleChannelInboundHandler<BigInteg
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, final BigInteger msg) {
-        receivedMessages ++;
+        receivedMessages++;
         if (receivedMessages == FactorialClient.COUNT) {
             // Offer the answer after closing the connection.
             ctx.channel().close().addListener(new ChannelFutureListener() {
@@ -86,6 +86,7 @@ public class FactorialClientHandler extends SimpleChannelInboundHandler<BigInteg
         // Do not send more than 4096 numbers.
         ChannelFuture future = null;
         for (int i = 0; i < 4096 && next <= FactorialClient.COUNT; i++) {
+            System.out.printf("Client.send:\t%d\n", next);
             future = ctx.write(Integer.valueOf(next));
             next++;
         }
@@ -102,6 +103,7 @@ public class FactorialClientHandler extends SimpleChannelInboundHandler<BigInteg
             if (future.isSuccess()) {
                 sendNumbers();
             } else {
+                System.out.println("Callback fail");
                 future.cause().printStackTrace();
                 future.channel().close();
             }
